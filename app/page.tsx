@@ -38,7 +38,13 @@ import {
 } from "recharts";
 
 // Complete Argentina inflation data from CSV (2017-2025)
-const inflationData = {
+type InflationData = {
+  [year: string]: {
+    [month: string]: number;
+  };
+};
+
+const inflationData: InflationData = {
   "2017": {
     "1": 1.3,
     "2": 2.5,
@@ -179,21 +185,21 @@ const years = Object.keys(inflationData)
   .sort((a, b) => a.value - b.value);
 
 export default function ArgentinaInflationCalculator() {
-  const [amount, setAmount] = useState("");
-  const [fromMonth, setFromMonth] = useState("");
-  const [fromYear, setFromYear] = useState("");
-  const [toMonth, setToMonth] = useState("");
-  const [toYear, setToYear] = useState("");
-  const [result, setResult] = useState(null);
-  const [totalInflation, setTotalInflation] = useState(null);
-  const [monthsCalculated, setMonthsCalculated] = useState(0);
+  const [amount, setAmount] = useState<any>("");
+  const [fromMonth, setFromMonth] = useState<any>("");
+  const [fromYear, setFromYear] = useState<any>("");
+  const [toMonth, setToMonth] = useState<any>("");
+  const [toYear, setToYear] = useState<any>("");
+  const [result, setResult] = useState<any>(null);
+  const [totalInflation, setTotalInflation] = useState<any>(null);
+  const [monthsCalculated, setMonthsCalculated] = useState<any>(0);
 
   const calculateInflation = () => {
     if (!amount || !fromMonth || !fromYear || !toMonth || !toYear) {
       return;
     }
 
-    const startAmount = Number.parseFloat(amount);
+    const startAmount: any = Number.parseFloat(amount);
     if (isNaN(startAmount) || startAmount <= 0) {
       return;
     }
@@ -236,8 +242,8 @@ export default function ArgentinaInflationCalculator() {
       currentDate.setMonth(currentDate.getMonth() + 1);
     }
 
-    const finalAmount = startAmount * cumulativeInflation;
-    const totalInflationPercentage = (cumulativeInflation - 1) * 100;
+    const finalAmount: any = startAmount * cumulativeInflation;
+    const totalInflationPercentage: any = (cumulativeInflation - 1) * 100;
 
     setResult(finalAmount);
     setTotalInflation(totalInflationPercentage);
@@ -250,7 +256,8 @@ export default function ArgentinaInflationCalculator() {
     }
   }, [amount, fromMonth, fromYear, toMonth, toYear]);
 
-  const formatCurrency = (value) => {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const formatCurrency = (value: any) => {
     return new Intl.NumberFormat("es-AR", {
       style: "currency",
       currency: "ARS",
@@ -259,11 +266,11 @@ export default function ArgentinaInflationCalculator() {
     }).format(value);
   };
 
-  const formatPercentage = (value) => {
-    return `${value.toFixed(2)}%`;
+  const formatPercentage = (value: any) => {
+    return `${value?.toFixed(2)}%`;
   };
 
-  const getAvailableMonths = (selectedYear) => {
+  const getAvailableMonths = (selectedYear: any) => {
     if (!selectedYear || !inflationData[selectedYear]) {
       return months;
     }
@@ -278,7 +285,7 @@ export default function ArgentinaInflationCalculator() {
       return [];
     }
 
-    const startAmount = Number.parseFloat(amount);
+    const startAmount: any = Number.parseFloat(amount);
     if (isNaN(startAmount) || startAmount <= 0) {
       return [];
     }
